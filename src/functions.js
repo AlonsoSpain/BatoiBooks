@@ -6,6 +6,7 @@ function getBookById(books, bookId) {
   return book;
 }
 
+
 function getBookIndexById(books, bookId) {
   const index = books.findIndex((book) => book.id == bookId);
   if (index === -1) {
