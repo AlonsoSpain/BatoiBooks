@@ -1,5 +1,13 @@
 import User from "./User.class";
 
+import {
+  getDBUsers,
+  addDBUser,
+  removeDBUser,
+  changeDBUser,
+  changeDBUserPassword,
+} from "../services/api";
+
 export default class Users {
   #data;
 
@@ -7,42 +15,59 @@ export default class Users {
     this.#data = [];
   }
 
-  // We use User class as template to replace their properties with the properties of objects we're passing it.
-  populate(array) {
-    this.#data = array.map(
+  async populate() {
+    const res = await getDBUsers();
+
+    this.#data = res.map(
       (user) => new User(user.id, user.nick, user.email, user.password),
     );
   }
 
+  async addUser(user) {
 
-  // We create an array with ids and we extracts numbers with spread.
-  addUser(user) {
+    let userCreated = new User(0, user.nick, user.email, user.password);
 
-    const userId = Math.max(...(this.#data.map(user => user.id))) + 1;
+    const res = await addDBUser(userCreated);
 
-    let userCreated = new User(userId,user.nick,user.email,user.password);
-
-    this.#data.push(userCreated);
-
-    return userCreated;
+    this.populate();
   }
 
-  removeUser(id) {
-    let index = this.#data.findIndex((user) => user.id == id);
+  async removeUser(userId) {
+    let users = await getDBUsers();
+
+    let index = users.findIndex((user) => user.id == userId);
 
     if (index != -1) {
-      this.#data.splice(index, 1);
+      const res = await removeDBUser(userId);
+      this.populate();
+    } else {
+      throw new Error("El usuario no existe");
+    }
+
+    this.populate();
+  }
+
+  async changeUser(userReceived) {
+    let users = await getDBUsers();
+
+    let userIndex = users.findIndex((user) => user.id === userReceived.id);
+
+    if (userIndex != -1) {
+      const res = await changeDBUser(userReceived);
+      this.populate();
     } else {
       throw new Error("El usuario no existe");
     }
   }
 
-  changeUser(userReceived) {
-    let userIndex = this.#data.findIndex((user) => user.id === userReceived.id);
+  async changeUserPassword(userId, password) {
+    let users = await getDBUsers();
+
+    let userIndex = users.findIndex((user) => user.id === userId);
 
     if (userIndex != -1) {
-      this.#data.splice(userIndex, 1, userReceived);
-      return userReceived;
+      const res = await changeDBUserPassword(userId,password);
+      this.populate();
     } else {
       throw new Error("El usuario no existe");
     }
@@ -86,8 +111,7 @@ export default class Users {
     return existence;
   }
 
-
-  getData(){
+  getData() {
     return this.#data;
   }
 }

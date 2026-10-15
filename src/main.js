@@ -1,26 +1,5 @@
 import "./style.css";
 import logoBatoi from "../public/logoBatoi.png";
-import datos from "./services/datos";
-
-// import { data } from './services/datos.js'
-
-import {
-  getBookById,
-  getBookIndexById,
-  bookExists,
-  booksFromUser,
-  booksFromModule,
-  booksCheeperThan,
-  booksWithStatus,
-  averagePriceOfBooks,
-  booksOfTypeNotes,
-  booksNotSold,
-  incrementPriceOfbooks,
-  getUserById,
-  getUserIndexById,
-  getUserByNickName,
-  getModuleByCode,
-} from "./functions";
 
 import User from "./model/User.class.js";
 import Users from "./model/Users.class.js";
@@ -36,29 +15,23 @@ document.querySelector("#app").innerHTML = `
 <p>Abre la consola para ver el resultado</p>
 `;
 
-// console.log(booksFromUser(datos.books,4));
-// console.log(booksWithStatus(booksFromModule(datos.books,"5021"),"good"));
-// console.log(incrementPriceOfbooks(datos.books,10))
-
-const users = new Users();
-users.populate(datos.users);
-
-const user1 = new User("Alex", "alex@gmail.com", 1234);
-
-
-const books = new Books();
-books.populate(datos.books);
-
-const book1 = new Book(10, 10, "Genius", 20.55, 30, "good");
-
-
-const modules = new Modules();
-modules.populate(datos.modules);
+// Cuando colocamos un id al principio el plugin de json-server sobreescribe cualquier
+// id colocado por uno aleatorio, si se borra el id fisico que colocamos se corren las posiciones y da lugar
+// a que por ejemplo alex@gmail.com sea la password
 
 const module1 = new Module("CV0006", "Sol", "Solet", "58");
+const book1 = new Book("lYSf0upCDOM", 10, 10, "Philosophae", 20.55, 30, "good");
+const user1 = new User("aFkppv4EcXA", "Alexis", "alex@gmail.com", 1234);
 
+const users = new Users();
+const modules = new Modules();
+const books = new Books();
 
-console.log(books.booksFromModule("5021"));
-console.log(books.booksWithStatus("new"));
-console.log(books.incrementPriceOfbooks(10));
+async function main() {
+  const res = await books.populate();
 
+  console.log(books.booksFromModule("5021"));
+  console.log(books.booksWithStatus("new"));
+}
+
+main();

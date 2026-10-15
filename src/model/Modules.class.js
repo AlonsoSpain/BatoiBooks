@@ -1,22 +1,6 @@
 import Module from "./Module.class.js";
+import { getDBModules } from "../services/api";
 
-import {
-  getBookById,
-  getBookIndexById,
-  bookExists,
-  booksFromUser,
-  booksFromModule,
-  booksCheeperThan,
-  booksWithStatus,
-  averagePriceOfBooks,
-  booksOfTypeNotes,
-  booksNotSold,
-  incrementPriceOfbooks,
-  getUserById,
-  getUserIndexById,
-  getUserByNickName,
-  getModuleByCode,
-} from "../functions.js";
 
 export default class Modules {
   #data;
@@ -25,8 +9,11 @@ export default class Modules {
     this.#data = [];
   }
 
-  populate(array) {
-    this.#data = array.map(
+  async populate() {
+    
+    const res = await getDBModules();
+
+    this.#data = res.map(
       (module) =>
         new Module(
           module.code,
@@ -57,7 +44,7 @@ export default class Modules {
     return existence;
   }
 
-    getData(){
+  getData() {
     return this.#data;
   }
 }

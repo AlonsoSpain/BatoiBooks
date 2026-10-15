@@ -108,6 +108,7 @@ function getUserByNickName(users,nick){
 }
 
 function getModuleByCode(modules, moduleCode){
+
     const existence = modules.filter((module) => module.code == moduleCode)
 
     if(existence.length === 0){
@@ -115,6 +116,7 @@ function getModuleByCode(modules, moduleCode){
     }
 
     return existence;
+    
 }
 
 export {

@@ -11,7 +11,5 @@ export default class User {
   toString() {
     return `User { id: ${this.id}, nick: ${this.nick}, email: ${this.email}, password: ${this.password} }`;
   }
-  
-  
-
+ 
 }

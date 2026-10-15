@@ -1,5 +1,5 @@
 import Book from "./Book.class.js";
-
+import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from "../services/api";
 
 export default class Books {
   #data;
@@ -8,8 +8,10 @@ export default class Books {
     this.#data = [];
   }
 
-  populate(array) {
-    this.#data = array.map(
+  async populate() {
+    const books = await getDBBooks();
+
+    this.#data = books.map(
       (book) =>
         new Book(
           book.id,
@@ -26,32 +28,47 @@ export default class Books {
     );
   }
 
-  addBook(book) {
-    const bookId = Math.max(...this.#data.map((book) => book.id)) + 1;
+  async addBook(book) {
+    let bookCreated = new Book(
+      0,
+      book.userId,
+      book.moduleCode,
+      book.publisher,
+      book.price,
+      book.pages,
+      book.status,
+      book.photo,
+      book.comments,
+      book.soldDate,
+    );
 
-    let bookCreated = new Book(bookId, book.userId, book.moduleCode, book.publisher, book.price, book.pages, book.status, book.photo, book.comments, book.soldDate);
+    const res = await addDBBook(bookCreated);
 
-    this.#data.push(bookCreated);
-
-    return bookCreated;
+    this.populate();
   }
 
-  removeBook(bookReceived) {
-    let index = this.#data.findIndex((book) => book.id == bookReceived);
+  async removeBook(bookId) {
+    let books = await getDBBooks();
+
+    // To know if the user book id sent actually exists
+    let index = books.findIndex((book) => book.id == bookId);
 
     if (index != -1) {
-      this.#data.splice(index, 1);
+      const res = await removeDBBook(bookId);
+      this.populate();
     } else {
       throw new Error("El libro no existe");
     }
   }
 
-  changeBook(bookReceived) {
-    let bookIndex = this.#data.findIndex((book) => book.id === bookReceived.id);
+  async changeBook(bookReceived) {
+    let books = await getDBBooks();
+
+    let bookIndex = books.findIndex((book) => book.id === bookReceived.id);
 
     if (bookIndex != -1) {
-      this.#data.splice(bookIndex, 1, bookReceived);
-      return bookReceived;
+      const res = await changeDBBook(bookReceived);
+      this.populate();
     } else {
       throw new Error("El libro no existe");
     }
@@ -140,14 +157,8 @@ export default class Books {
     return existences;
   }
 
-  incrementPriceOfbooks(percentage) {
-    const existences = this.#data.map((book) => {
-      return { ...book, price: book.price + book.price * (percentage / 100) };
-    });
-    return existences;
-  }
 
-  getData(){
+  getData() {
     return this.#data;
   }
 }
