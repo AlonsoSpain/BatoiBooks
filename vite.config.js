@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  test: {
+    setupFiles: ["./vitest.setup.js"]
+  },
   build: {
     rollupOptions: {
-      input: 'BatoiBooks-Alonso.html' // el nombre que le hayas puesto
+      input: 'index.html' // el nombre que le hayas puesto
     }
   }
 })

@@ -10,7 +10,8 @@ import User from "../model/User.class.js";
 
 async function getDBUsers() {
   const res = await fetch(usersURL);
-  return res.json();
+  const users = await res.json();
+  return users;
 }
 
 async function getDBModules() {
@@ -38,38 +39,20 @@ async function getDBBook(id) {
 }
 
 async function addDBBook(book) {
-  const books = await getDBBooks();
-
-  const idBook = Math.max(...books.map((b) => b.id)) + 1;
-
-  const bookFormatted = new Book(
-    idBook,
-    book.userId,
-    book.moduleCode,
-    book.publisher,
-    book.price,
-    book.pages,
-    book.status,
-    book.photo,
-    book.comments,
-    book.soldDate,
-  );
-
   const res = await fetch(booksURL, {
     method: "POST",
     headers: { "Content-type": "application/json" },
-    body: JSON.stringify(bookFormatted),
+    body: JSON.stringify(book),
   });
 }
 
 async function addDBUser(user) {
-  const users = await getDBUsers();
-
   const res = await fetch(usersURL, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(user),
   });
+
 }
 
 async function removeDBBook(bookId) {
@@ -84,18 +67,12 @@ async function removeDBUser(userId) {
   });
 }
 
-
-
-
-
 async function changeDBBook(bookReceived) {
-  
   const res = await fetch(booksURL + `/${bookReceived.id}`, {
     method: "PUT",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(bookReceived)
   });
-  
 }
 
 async function changeDBUser(userReceived) {
@@ -105,7 +82,6 @@ async function changeDBUser(userReceived) {
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(userReceived)
   });
-  
 }
 
 async function changeDBUserPassword(id, password) {
@@ -115,7 +91,6 @@ async function changeDBUserPassword(id, password) {
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({ password: password })
   });
-
 }
 
 export {
@@ -131,4 +106,7 @@ export {
   changeDBBook,
   changeDBUser,
   changeDBUserPassword,
-};
+};    
+
+
+  

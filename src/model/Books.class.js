@@ -1,5 +1,10 @@
 import Book from "./Book.class.js";
-import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from "../services/api";
+import {
+  getDBBooks,
+  addDBBook,
+  removeDBBook,
+  changeDBBook,
+} from "../services/api";
 
 export default class Books {
   #data;
@@ -29,8 +34,12 @@ export default class Books {
   }
 
   async addBook(book) {
+    const books = await getDBBooks();
+
+    const idBook = Math.max(...books.map((b) => b.id)) + 1;
+
     let bookCreated = new Book(
-      0,
+      idBook,
       book.userId,
       book.moduleCode,
       book.publisher,
@@ -59,6 +68,7 @@ export default class Books {
     } else {
       throw new Error("El libro no existe");
     }
+        this.populate();
   }
 
   async changeBook(bookReceived) {
@@ -156,7 +166,6 @@ export default class Books {
     const existences = this.#data.filter((book) => book.soldDate == "");
     return existences;
   }
-
 
   getData() {
     return this.#data;

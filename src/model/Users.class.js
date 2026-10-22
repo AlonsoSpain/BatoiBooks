@@ -18,14 +18,19 @@ export default class Users {
   async populate() {
     const res = await getDBUsers();
 
-    this.#data = res.map(
-      (user) => new User(user.id, user.nick, user.email, user.password),
-    );
+    if (res != undefined) {
+      this.#data = res.map(
+        (user) => new User(user.id, user.nick, user.email, user.password),
+      );
+    }
   }
 
   async addUser(user) {
+    const users = await getDBUsers();
 
-    let userCreated = new User(0, user.nick, user.email, user.password);
+    const userId = Math.max(...users.map((u) => u.id)) + 1;
+
+    let userCreated = new User(userId, user.nick, user.email, user.password);
 
     const res = await addDBUser(userCreated);
 
@@ -33,6 +38,7 @@ export default class Users {
   }
 
   async removeUser(userId) {
+    // Check here first if the user exists.
     let users = await getDBUsers();
 
     let index = users.findIndex((user) => user.id == userId);
@@ -66,7 +72,7 @@ export default class Users {
     let userIndex = users.findIndex((user) => user.id === userId);
 
     if (userIndex != -1) {
-      const res = await changeDBUserPassword(userId,password);
+      const res = await changeDBUserPassword(userId, password);
       this.populate();
     } else {
       throw new Error("El usuario no existe");
