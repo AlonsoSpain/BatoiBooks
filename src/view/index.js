@@ -83,7 +83,7 @@ export default class View {
   </label> <br>
 
    <button type="submit" id="btn-guardar">Añadir</button>
-    <button>Reset</button>
+    <button type="Reset">Reset</button>
    
     </form>
   </div>
@@ -172,6 +172,7 @@ export default class View {
   }
 
   mostrarLibros(libros) {
+    this.booksList.innerHTML = '';
     libros.forEach((libro) => {
       this.booksList.append(this.crearTarjetaLibro(libro));
     });
@@ -235,6 +236,12 @@ export default class View {
   obtenerIdEliminar() {
     return this.campoIdEliminar.value.trim();
   }
+
+
+  limpiarFormulario() {
+    this.bookForm.reset()
+  }
+
 
   setEliminarHandler(handler) {
     this.botonEliminar.addEventListener("click", () => {

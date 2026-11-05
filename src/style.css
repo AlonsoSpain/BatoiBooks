@@ -35,7 +35,7 @@ gap:.5rem;
   justify-content: center;
   gap:1rem;
 }
-.alert-success{
+.alert-info{
   background-color: green;
 }
 
