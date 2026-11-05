@@ -96,6 +96,7 @@ export default class Users {
       throw new Error("El usuario no existe");
     }
     return existence;
+    
   }
 
   getUserIndexById(userId) {

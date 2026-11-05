@@ -1,5 +1,4 @@
 export default class Book {
-
   constructor(
     id,
     userId,
@@ -7,11 +6,12 @@ export default class Book {
     publisher,
     price,
     pages,
-    status,
+    status = "",
     photo = "",
     comments = "",
     soldDate = "",
-) {
+  ) {
+    
     this.id = id;
     this.userId = userId;
     this.moduleCode = moduleCode;
@@ -24,9 +24,7 @@ export default class Book {
     this.soldDate = soldDate;
   }
 
- toString() {
-  return `Book { id: ${this.id}, userId: ${this.userId}, moduleCode: ${this.moduleCode}, publisher: ${this.publisher}, price: ${this.price}, pages: ${this.pages}, status: ${this.status}, photo: ${this.photo}, comments: ${this.comments}, soldDate: ${this.soldDate} }`;
-}
-
-
+  toString() {
+    return `Book { id: ${this.id}, userId: ${this.userId}, moduleCode: ${this.moduleCode}, publisher: ${this.publisher}, price: ${this.price}, pages: ${this.pages}, status: ${this.status}, photo: ${this.photo}, comments: ${this.comments}, soldDate: ${this.soldDate} }`;
+  }
 }
