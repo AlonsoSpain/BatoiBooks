@@ -2,6 +2,7 @@ import User from "./User.class";
 
 import {
   getDBUsers,
+  getDBUser,
   addDBUser,
   removeDBUser,
   changeDBUser,
@@ -89,15 +90,15 @@ export default class Users {
     return res;
   }
 
-  getUserById(userId) {
-    const existence = this.#data.find((user) => user.id == userId);
+async getUserById(userId) {
+  const users = await getDBUser(userId);
 
-    if (!existence) {
-      throw new Error("El usuario no existe");
-    }
-    return existence;
-    
+  if (!users || users.length === 0) {
+    throw new Error("El usuario no existe");
   }
+
+  return users[0];
+}
 
   getUserIndexById(userId) {
     const index = this.#data.findIndex((user) => user.id == userId);

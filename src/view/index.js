@@ -172,7 +172,7 @@ export default class View {
   }
 
   mostrarLibros(libros) {
-    this.booksList.innerHTML = '';
+    this.booksList.innerHTML = "";
     libros.forEach((libro) => {
       this.booksList.append(this.crearTarjetaLibro(libro));
     });
@@ -224,8 +224,8 @@ export default class View {
     return {
       moduleCode: this.campoModulo.value,
       publisher: this.campoEditorial.value,
-      price: this.campoPrecio.value,
-      pages: this.campoPaginas.value,
+      price: Number(this.campoPrecio.value),
+      pages: Number(this.campoPaginas.value),
       status: this.campoStatus.value,
       photo: this.campoFoto.value,
       comments: this.campoComentarios.value,
@@ -237,17 +237,20 @@ export default class View {
     return this.campoIdEliminar.value.trim();
   }
 
-
   limpiarFormulario() {
-    this.bookForm.reset()
+    this.bookForm.reset();
   }
-
 
   setEliminarHandler(handler) {
     this.botonEliminar.addEventListener("click", () => {
       const id = this.obtenerIdEliminar();
 
-      // callback function, I'm waiting for a function they passed to me, to execute my id on that.
+      if(!id){
+        this.mostrarMensaje("La ID del libro es obligatoria","error");
+        return;
+      }
+
+      // callback function, (id = I'm waiting for a function they passed to me, to execute my id on that).
       handler(id);
     });
   }

@@ -14,6 +14,12 @@ let users = [
     nick: "Ignasi",
     password: "1234",
   },
+  {
+    id: "3",
+    email: "juanseguravasco@gmail.com",
+    nick: "Juan",
+    password: "1234",
+  },
 ];
 
 let modules = [

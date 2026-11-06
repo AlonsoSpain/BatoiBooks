@@ -21,7 +21,7 @@ export default class Controller {
   async actualizarCatalogo() {
     await this.books.populate();
     await this.modules.populate();
-    
+
     this.view.mostrarLibros(this.books.getData());
     this.view.selectModulos(this.modules.getData());
   }
@@ -46,6 +46,7 @@ export default class Controller {
       await this.books.addBook(data);
       const texto = "Libro añdido con exito";
       await this.actualizarCatalogo();
+      this.view.limpiarFormulario();
       this.view.mostrarMensaje(texto, "info");
     } catch (err) {
       console.log("error");
