@@ -42,3 +42,27 @@ gap:.5rem;
 .alert-error{
   background-color: rgb(143, 2, 2);
 }
+
+
+.book-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.book-actions button {
+  cursor: pointer;
+  padding: 0.4rem;
+  background: #555;
+  color: white;
+  border: 0;
+  border-radius: 4px;
+}
+
+.book-actions button:hover {
+  background: #777;
+}
+
+.material-icons {
+  font-size: 1.3rem;
+}

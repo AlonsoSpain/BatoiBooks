@@ -31,21 +31,20 @@ export default class View {
 
   </div>
   
-  <div id="remove">
-
-  <h1>Eliminar libro</h1>
-
-    <label for="id-eliminar">
-        Id libro remover:  <input type="text" id="id-eliminar" for="id-eliminar">
-        <button type="submit" id="btn-eliminar">Borrar</button>
-    </label>
-
-  </div>
+ 
 
   <div id="form">
   
   <form action="" id="bookForm">
-  <h1>Añadir libro</h1>
+  <h1 id="formTitle">Añadir libro</h1>
+
+
+<div id="bookIdContainer" hidden>
+  <label for="bookId">
+    ID:
+    <input type="text" id="bookId" disabled />
+  </label>
+</div>
     
   <label for="modulos">Modulo:</label>
 
@@ -101,6 +100,23 @@ export default class View {
 
 `;
 
+    /* 
+ <div id="remove">
+
+  <h1>Eliminar libro</h1>
+
+    <label for="id-eliminar">
+        Id libro remover:  <input type="text" id="id-eliminar" for="id-eliminar">
+        <button type="submit" id="btn-eliminar">Borrar</button>
+    </label>
+
+  </div>
+  
+      this.campoIdEliminar = document.getElementById("id-eliminar");
+    this.botonEliminar = document.getElementById("btn-eliminar");
+
+  */
+
     this.booksList = document.getElementById("list");
     this.about = document.getElementById("about");
     this.form = document.getElementById("form");
@@ -119,9 +135,12 @@ export default class View {
     this.campoComentarios = document.getElementById("comentarios");
     this.campoFechaVenta = document.getElementById("fechaVenta");
 
-    this.campoIdEliminar = document.getElementById("id-eliminar");
-    this.botonEliminar = document.getElementById("btn-eliminar");
     this.botonGuardar = document.getElementById("btn-guardar");
+
+    //
+    this.formTitle = document.getElementById("formTitle");
+    this.bookIdContainer = document.getElementById("bookIdContainer");
+    this.campoId = document.getElementById("bookId");
   }
 
   crearTarjetaLibro(libro) {
@@ -156,6 +175,30 @@ export default class View {
     const price = document.createElement("h4");
     price.textContent = `${libro.price} €`;
 
+    // Buttons :
+    const acciones = document.createElement("div");
+    acciones.classList.add("book-actions");
+
+    const botonCarrito = document.createElement("button");
+    botonCarrito.innerHTML = `
+  <span class="material-icons">add_shopping_cart</span>
+`;
+    botonCarrito.dataset.action = "card";
+
+    const botonEditar = document.createElement("button");
+    botonEditar.innerHTML = `
+  <span class="material-icons">edit</span>
+`;
+    botonEditar.dataset.action = "edit";
+
+    const botonEliminar = document.createElement("button");
+    botonEliminar.innerHTML = `
+  <span class="material-icons">delete</span>
+`;
+    botonEliminar.dataset.action = "delete";
+
+    acciones.append(botonCarrito, botonEditar, botonEliminar);
+
     tarjeta.append(
       libroImg,
       libroId,
@@ -166,6 +209,7 @@ export default class View {
       soldDate,
       comments,
       price,
+      acciones,
     );
 
     return tarjeta;
@@ -220,8 +264,12 @@ export default class View {
     }
   }
 
+  // From here we send id 2.
   obtenerDatosFormulario() {
+    console.log("id" + this.campoId.value.trim());
     return {
+      id: this.campoId.value.trim(),
+      userId: 2,
       moduleCode: this.campoModulo.value,
       publisher: this.campoEditorial.value,
       price: Number(this.campoPrecio.value),
@@ -239,12 +287,18 @@ export default class View {
 
   limpiarFormulario() {
     this.bookForm.reset();
+
+    this.formTitle.textContent = "Añadir libro";
+    this.bookIdContainer.hidden = true;
+    this.campoId.value = "";
+    this.botonGuardar.textContent = "Añadir";
   }
 
+  /* 
   setEliminarHandler(handler) {
     this.botonEliminar.addEventListener("click", () => {
       const id = this.obtenerIdEliminar();
-
+      
       if(!id){
         this.mostrarMensaje("La ID del libro es obligatoria","error");
         return;
@@ -254,12 +308,58 @@ export default class View {
       handler(id);
     });
   }
+  */
 
-  setGuardarHandler(handler) {
+  setSubmitHandler(handler) {
     this.bookForm.addEventListener("submit", (e) => {
       e.preventDefault();
+
       const data = this.obtenerDatosFormulario();
       handler(data);
     });
   }
+
+  // Events of each button of card
+
+  setBookActionHandler(handler) {
+    this.booksList.addEventListener("click", (event) => {
+      // even.target = is the span, not the button, with closest we'll go where is the button
+      const button = event.target.closest("button");
+
+      if (!button) {
+        return;
+      }
+
+      // here we search the parent element more near that have class .card
+      const card = button.closest(".card");
+
+      // because of card have an id we use it.
+      const id = card.dataset.id;
+
+      const action = button.dataset.action;
+
+      // callback function = will execute (setBookActionHandler), with this parameters
+      handler(action, id);
+    });
+  }
+
+  // View doesn't hear the actions, but controller.
+
+  prepareEdit(book) {
+    this.formTitle.textContent = "Editar libro";
+    this.bookIdContainer.hidden = false;
+    this.campoId.value = book.id;
+
+    this.campoModulo.value = book.moduleCode;
+    this.campoEditorial.value = book.publisher;
+    this.campoPrecio.value = book.price;
+    this.campoPaginas.value = book.pages;
+    this.campoStatus.value = book.status;
+    this.campoFoto.value = book.photo;
+    this.campoComentarios.value = book.comments;
+    this.campoFechaVenta.value = book.soldDate;
+
+    this.botonGuardar.textContent = "Guardar cambios";
+  }
+  
 }
