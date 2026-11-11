@@ -1,3 +1,68 @@
+
 body{
   background-color: #222;
+  color:white;
+}
+
+li{
+  list-style:none;
+}
+
+a{
+  text-decoration: none;
+  color:rgb(156, 156, 156);
+}
+
+#list{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+gap:.5rem;
+
+
+
+
+}
+
+.card{
+  border:1px solid rgb(105, 105, 105);
+  padding:2rem;
+  background-color: rgb(44, 44, 44);
+}
+
+.alert{
+  padding:.5rem;
+  display:flex;
+  justify-content: center;
+  gap:1rem;
+}
+.alert-info{
+  background-color: green;
+}
+
+.alert-error{
+  background-color: rgb(143, 2, 2);
+}
+
+
+.book-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.book-actions button {
+  cursor: pointer;
+  padding: 0.4rem;
+  background: #555;
+  color: white;
+  border: 0;
+  border-radius: 4px;
+}
+
+.book-actions button:hover {
+  background: #777;
+}
+
+.material-icons {
+  font-size: 1.3rem;
 }

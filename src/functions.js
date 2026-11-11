@@ -6,6 +6,7 @@ function getBookById(books, bookId) {
   return book;
 }
 
+
 function getBookIndexById(books, bookId) {
   const index = books.findIndex((book) => book.id == bookId);
   if (index === -1) {
@@ -107,6 +108,7 @@ function getUserByNickName(users,nick){
 }
 
 function getModuleByCode(modules, moduleCode){
+
     const existence = modules.filter((module) => module.code == moduleCode)
 
     if(existence.length === 0){
@@ -114,6 +116,7 @@ function getModuleByCode(modules, moduleCode){
     }
 
     return existence;
+    
 }
 
 export {
