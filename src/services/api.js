@@ -1,9 +1,10 @@
-const usersURL = "http://localhost:3000/users";
-const coursesURL = "http://localhost:3000/courses";
-const modulesURL = "http://localhost:3000/modules";
-const families = "http://localhost:3000/families";
-const salesURL = "http://localhost:3000/sales";
-const booksURL = "http://localhost:3000/books";
+const endpoint = "http://localhost:3001/"; 
+const usersURL = endpoint + "users";
+const coursesURL = endpoint + "courses";
+const modulesURL = endpoint + "modules"; 
+const families = endpoint + "families";
+const salesURL = endpoint + "sales";
+const booksURL = endpoint + "books";
 
 import Book from "../model/Book.class.js";
 import User from "../model/User.class.js";
