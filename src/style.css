@@ -66,3 +66,8 @@ gap:.5rem;
 .material-icons {
   font-size: 1.3rem;
 }
+
+
+.hidden{
+  display:none;
+}

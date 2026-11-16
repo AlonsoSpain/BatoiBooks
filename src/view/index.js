@@ -33,7 +33,7 @@ export default class View {
   
  
 
-  <div id="form">
+  <div id="form" class="hidden">
   
   <form action="" id="bookForm">
   <h1 id="formTitle">Añadir libro</h1>
@@ -51,7 +51,6 @@ export default class View {
   <select id="moduleSelect" name="modulos">
       <option value="">Selecciona una opción</option>
   </select> <br>
-
 
   <label for="editorial">
   Editorial: <input type="text" id="editorial">
@@ -87,7 +86,7 @@ export default class View {
     </form>
   </div>
   
-  <div id="about">
+  <div id="about" class="hidden">
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, corporis.
   </div>
 </div>
@@ -141,6 +140,10 @@ export default class View {
     this.formTitle = document.getElementById("formTitle");
     this.bookIdContainer = document.getElementById("bookIdContainer");
     this.campoId = document.getElementById("bookId");
+  
+  
+    this.startRouter();
+
   }
 
   crearTarjetaLibro(libro) {
@@ -214,6 +217,47 @@ export default class View {
 
     return tarjeta;
   }
+
+  
+  // Eventos 6.1
+  startRouter(){
+    const pages = {
+      "#list" : this.booksList,
+      "#form" : this.form,
+      "#about" : this.about
+    }
+
+
+    const showPage = () => {
+
+      // first, hidden all pages: Object.values = get value elements () and not keys.
+      Object.values(pages).forEach((page) => {
+        // is like: pages["#list"].classList.add("hidden");
+        page.classList.add("hidden");
+      });
+
+      // get current route: if exists a hash use it, but use #list. 
+      const currentRoute = window.location.hash || "#list";
+
+      // find page(element) according to the route
+      const currentPage = pages[currentRoute] || pages["#list"];
+
+      // access to their properties and show only that page
+      currentPage.classList.remove("hidden");
+
+      // This cleans the form when go to #form route, completing with the requested.
+      if(currentRoute === "#form") {
+        this.limpiarFormulario();
+      }
+    };
+
+    window.addEventListener("hashchange",showPage);
+
+    showPage();
+
+
+  }
+
 
   mostrarLibros(libros) {
     this.booksList.innerHTML = "";
